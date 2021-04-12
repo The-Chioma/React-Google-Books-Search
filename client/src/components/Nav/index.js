@@ -6,9 +6,6 @@ function Nav() {
       <a className="navbar-brand" href="/">
         React Google Books Search
       </a>
-      <a className="navbar-brand" href="/search">
-        Search books on Google
-      </a>
     </nav>
   );
 }

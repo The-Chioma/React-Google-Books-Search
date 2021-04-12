@@ -6,11 +6,13 @@ import { Link } from "react-router-dom";
 import { Col, Row, Container } from "../components/Grid";
 import { List, ListItem } from "../components/List";
 import { Input, TextArea, FormBtn } from "../components/Form";
+import { Alert } from "react-bootstrap";
 
 function Books() {
   const [books, setBooks] = useState([])
   const [formObject, setFormObject] = useState({})
   const [query, setQuery] = useState("");
+  const [success, setSuccess] = useState("");
 
   useEffect(() => {
     loadBooks()
@@ -64,7 +66,7 @@ function Books() {
             key: result.id,
             id: result.id,
             title: result.volumeInfo.title,
-            authors: result.volumeInfo.authors,
+            author: result.volumeInfo.authors,
             synopsis: result.volumeInfo.description
           };
           return result;
@@ -73,13 +75,10 @@ function Books() {
       }
     });
   }
-  // function Search() {
-  //   const [books, setBooks] = useState();
-   
-  //   const [success, setSuccess] = useState("");
   
    
-  //   }  ;
+  
+  
     return (
       <Container fluid>
         <Row>
@@ -89,7 +88,7 @@ function Books() {
               <Input
                 onChange={changeSearch}
                 name="title"
-                placeholder="Title (required)"
+                placeholder="Type book title"
               />
             <FormBtn
                 //disabled={!(formObject.author && formObject.title)}
