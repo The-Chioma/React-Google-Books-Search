@@ -10,6 +10,7 @@ import { Input, TextArea, FormBtn } from "../components/Form";
 function Books() {
   const [books, setBooks] = useState([])
   const [formObject, setFormObject] = useState({})
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     loadBooks()
@@ -47,14 +48,58 @@ function Books() {
     }
   };
 
+  const changeSearch = (event) => {
+    setQuery(event.target.value);
+  };
+
+  const handleGoogleSearch = (event) => {
+    event.preventDefault();
+    API.googleBooks(query).then((response) => {
+      if (response.data.items === "error") {
+        throw new Error(response.data.items);
+      } else {
+        let results = response.data.items;
+        results = results.map((result) => {
+          result = {
+            key: result.id,
+            id: result.id,
+            title: result.volumeInfo.title,
+            authors: result.volumeInfo.authors,
+            synopsis: result.volumeInfo.description
+          };
+          return result;
+        });
+        setBooks(results);
+      }
+    });
+  }
+  // function Search() {
+  //   const [books, setBooks] = useState();
+   
+  //   const [success, setSuccess] = useState("");
+  
+   
+  //   }  ;
     return (
       <Container fluid>
         <Row>
           <Col size="md-6">
             <Jumbotron>
-              <h1>Add a book to the Database</h1>
+              <h1>Search book on Google</h1>
+              <Input
+                onChange={changeSearch}
+                name="title"
+                placeholder="Title (required)"
+              />
+            <FormBtn
+                //disabled={!(formObject.author && formObject.title)}
+                onClick={handleGoogleSearch}
+              >
+                Search
+              </FormBtn>
             </Jumbotron>
             <form>
+              <h1>Add a book to the Database</h1>
               <Input
                 onChange={handleInputChange}
                 name="title"
